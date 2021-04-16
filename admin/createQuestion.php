@@ -20,6 +20,7 @@ if (isset($_POST['params']['token']))
           `text`, 
           `correctAnswer`, 
           `wrongAnswer`, 
+          `typeAchievement`, 
           `utime`          
           ) VALUES ( '"
             .$_POST['params']['theme']."', '"
@@ -27,7 +28,8 @@ if (isset($_POST['params']['token']))
             .$_POST['params']['serialNumber'].", '"
             .$_POST['params']['text']."', '"
             .$_POST['params']['correctAnswer']."', '"
-            .$_POST['params']['wrongAnswer']."', "
+            .$_POST['params']['wrongAnswer']."', '"
+            .$_POST['params']['typeAchievement']."', "
             .time()." )";
         mysql_query($query) or die('write name err: ' . mysql_error());
         include './readBase.php';  
@@ -41,6 +43,7 @@ if (isset($_POST['params']['token']))
                 `text` = '".$_POST['params']['text']."', 
                 `correctAnswer` = '".$_POST['params']['correctAnswer']."', 
                 `wrongAnswer` = '".$_POST['params']['wrongAnswer']."', 
+                `typeAchievement` = '".$_POST['params']['typeAchievement']."', 	
                 `utime` = ".time()." 
                 WHERE `idq` = ".$_POST['params']['idq'];
                 
