@@ -47,10 +47,16 @@ if (isset($_POST['params']['token']))
               mysql_query($query) or die('write name err: ' . mysql_error());
         include './readBase.php';  
       }
+      if ($_POST['method']==='deleteQuestion'){
+       $query = "DELETE FROM `questions` 
+                  WHERE idq = ".$_POST['params']['idq'].";";
+            mysql_query($query) or die('delete quickAccessKit err: ' . mysql_error());
+        include './readBase.php';  
+      }
     }
 
     $r['type'] = 'approved';
-    //3.отправляем весь массив двнных  
+    //3.отправляем весь массив данных  
     $json = json_encode($r);
     echo $json;
     mysql_close($link);
