@@ -22,15 +22,47 @@ if (isset($_POST['params']['qr']))
           $r['rivals'][$ij] = $row;
           $ij++; 
         }
-        //3. записываем id текущего вопроса в базу
-
+        //3. записываем id текущего вопроса в базу игрока
+              $query = "UPDATE `gamers` 
+                SET 
+                `idq` = '".$_POST['params']['idq']."'
+                WHERE `idp` = ".$_POST['params']['idp'];
+                
+              mysql_query($query) or die('write name err: ' . mysql_error());
 
         //4. записываем новые достижения
+        $query = "SELECT * FROM `questions` WHERE `idq` = '".$_POST['params']['idq']."'";
+        $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+        if ($q = mysql_fetch_assoc($result)){ 
+          if ($q['typeAchievement']!=""){
+              $query = "INSERT INTO `achievements` (
+                `idp`, 
+                `time`, 
+                `typeAchievement`     
+                ) VALUES ( "
+                  .$_POST['params']['idp'].", "
+                  .time().", '"
+                  .$q['typeAchievement']."'
+                  )";
+              mysql_query($query) or die('write name err: ' . mysql_error());
+            }
+        }
+
 
         
         //5. записываем результат ответа на предыдущий вопрос
         
-
+          $query = "INSERT INTO `answers` (
+                `idq`, 
+                `idp`, 
+                `correctness`,
+                `time`     
+                ) VALUES ( "
+                  .$_POST['params']['idq'].", "
+                  .$_POST['params']['idp'].", "
+                  .$_POST['params']['correctness'].", "
+                  .time()." )";
+              mysql_query($query) or die('write name err: ' . mysql_error());
       }
      
     }

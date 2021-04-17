@@ -5,8 +5,8 @@
       //2. засовываем всё в ассоциативный массив
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
-          $r['base']['questions'][$ij] = $row;
-          $r['base']['questions'][$ij]['id'] = $row['idq'];
+          $r['questions'][$ij] = $row;
+          $r['questions'][$ij]['id'] = $row['idq'];
           $ij++; 
       }
 
@@ -16,8 +16,8 @@
       //2. засовываем всё в ассоциативный массив
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
-          $r['base']['gamers'][$ij] = $row;
-          $r['base']['gamers'][$ij]['id'] = $row['idp'];
+          $r['gamers'][$ij] = $row;
+          $r['gamers'][$ij]['id'] = $row['idp'];
           $ij++; 
       }
 
@@ -28,8 +28,8 @@
       //2. засовываем всё в ассоциативный массив
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
-          $r['base']['answers'][$ij] = $row;
-          $r['base']['answers'][$ij]['id'] = $row['idanswer'];
+          $r['answers'][$ij] = $row;
+          $r['answers'][$ij]['id'] = $row['idanswer'];
           $ij++; 
       }
       
@@ -39,7 +39,7 @@
       //2. засовываем всё в ассоциативный массив
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
-          $r['base']['achievements'][$ij] = $row;
-          $r['base']['achievements'][$ij]['id'] = $row['idach'];
+          $r['achievements'][$ij] = $row;
+          $r['achievements'][$ij]['id'] = $row['idach'];
           $ij++; 
       }
