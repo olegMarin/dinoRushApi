@@ -34,14 +34,14 @@ if (isset($_POST['params']['token']))
                 `name` = '".$_POST['params']['name']."', 
                 `color` = '".$_POST['params']['color']."',
                 `time` = ".time()." 
-                WHERE `idp` = ".$_POST['params']['idp'];
+                WHERE `idp` = ".$_POST['params']['id'];
                 
               mysql_query($query) or die('write name err: ' . mysql_error());
         include './readBase.php';  
       }
       if ($_POST['method']==='deleteGamer'){
        $query = "DELETE FROM `gamers` 
-                  WHERE idp = ".$_POST['params']['idp'].";";
+                  WHERE idp = ".$_POST['params']['id'].";";
             mysql_query($query) or die('delete quickAccessKit err: ' . mysql_error());
         include './readBase.php';  
       }

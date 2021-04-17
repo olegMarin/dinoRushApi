@@ -45,14 +45,14 @@ if (isset($_POST['params']['token']))
                 `wrongAnswer` = '".$_POST['params']['wrongAnswer']."', 
                 `typeAchievement` = '".$_POST['params']['typeAchievement']."', 	
                 `utime` = ".time()." 
-                WHERE `idq` = ".$_POST['params']['idq'];
+                WHERE `idq` = ".$_POST['params']['id'];
                 
               mysql_query($query) or die('write name err: ' . mysql_error());
         include './readBase.php';  
       }
       if ($_POST['method']==='deleteQuestion'){
        $query = "DELETE FROM `questions` 
-                  WHERE idq = ".$_POST['params']['idq'].";";
+                  WHERE idq = ".$_POST['params']['id'].";";
             mysql_query($query) or die('delete quickAccessKit err: ' . mysql_error());
         include './readBase.php';  
       }

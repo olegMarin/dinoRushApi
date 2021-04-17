@@ -6,6 +6,7 @@
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
           $r['base']['questions'][$ij] = $row;
+          $r['base']['questions'][$ij]['id'] = $row['idq'];
           $ij++; 
       }
 
@@ -16,6 +17,7 @@
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
           $r['base']['gamers'][$ij] = $row;
+          $r['base']['gamers'][$ij]['id'] = $row['idp'];
           $ij++; 
       }
 
@@ -27,6 +29,7 @@
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
           $r['base']['answers'][$ij] = $row;
+          $r['base']['answers'][$ij]['id'] = $row['idanswer'];
           $ij++; 
       }
       
@@ -37,5 +40,6 @@
       $ij=0;
       while ($row = mysql_fetch_assoc($result)) {
           $r['base']['achievements'][$ij] = $row;
+          $r['base']['achievements'][$ij]['id'] = $row['idach'];
           $ij++; 
       }
