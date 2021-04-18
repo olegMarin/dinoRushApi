@@ -22,7 +22,7 @@ if (isset($_POST['params']['token']))
         $query = "SELECT * FROM `questions` ORDER BY ".$sortField." ".$_POST['params']['sort']['order']." LIMIT ".$start.",".$_POST['params']['pagination']['perPage'];
         $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
 
-        //2. засовываем всё в ассоциативный массив
+        //засовываем всё в ассоциативный массив
         $ij=0;
         while ($row = mysql_fetch_assoc($result)) {
             $r['data'][$ij] = $row;
@@ -58,17 +58,52 @@ if (isset($_POST['params']['token']))
             .time()." )";
         mysql_query($query) or die('write name err: ' . mysql_error());
 
-        $query = "SELECT * FROM `questions` WHERE ipq = ".mysql_insert_id();
+        $query = "SELECT * FROM `questions` WHERE `idq` = ".mysql_insert_id();
         $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
 
-        //2. засовываем всё в ассоциативный массив
+        //засовываем всё в ассоциативный массив
         $ij=0;
-        $row = mysql_fetch_assoc($result)
+        $row = mysql_fetch_assoc($result);
             $r['data'] = $row;
-            $r['data']['id'] = $row['idq'];
-           
+            $r['data']['id'] = $row['idq'];    
 
       }
+      if ($_POST['method']==='update'){
+        $query = "UPDATE `questions` 
+                SET 
+                `theme` = '".$_POST['params']['data']['theme']."', 
+                `parentTheme` = '".$_POST['params']['data']['parentTheme']."', 
+                `serialNumber` = ".$_POST['params']['data']['serialNumber'].", 
+                `text` = '".$_POST['params']['data']['text']."', 
+                `correctAnswer` = '".$_POST['params']['data']['correctAnswer']."', 
+                `wrongAnswer` = '".$_POST['params']['data']['wrongAnswer']."', 
+                `typeAchievement` = '".$_POST['params']['data']['typeAchievement']."', 	
+                `utime` = ".time()." 
+                WHERE `idq` = ".$_POST['params']['id'];
+                
+              mysql_query($query) or die('write name err: ' . mysql_error());
+              
+        $query = "SELECT * FROM `questions` WHERE `idq` = ".$_POST['params']['id'];
+        $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+
+        //засовываем всё в ассоциативный массив
+        $ij=0;
+        $row = mysql_fetch_assoc($result);
+            $r['data'] = $row;
+            $r['data']['id'] = $row['idq'];  
+
+        include './readBase.php';  
+      }
+      if ($_POST['method']==='delete'){
+       $query = "DELETE FROM `questions` 
+                  WHERE idq = ".$_POST['params']['id'].";";
+            mysql_query($query) or die('delete quickAccessKit err: ' . mysql_error());
+        $r['data'] = $_POST['params']['previousData'];
+        $r['data']['id'] = $_POST['params']['id'];
+      }
+
+
+
       if ($_POST['method']==='addNewQuestion'){
         $query = "INSERT INTO `questions` (
           `theme`, 
