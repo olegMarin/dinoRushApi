@@ -1,7 +1,7 @@
 <?php
 header('ReferrerPolicy: "unsafe-url"');
 header('Access-Control-Allow-Headers: *');
-
+header('Access-Control-Allow-Origin: *');
 $_POST = json_decode(file_get_contents('php://input'), true);
 if (isset($_POST['params']['token']))
 { 
@@ -12,6 +12,25 @@ if (isset($_POST['params']['token']))
     
     
     if ($pers = mysql_fetch_assoc($result)){ 
+      if ($_POST['method']==='getList'){
+        if ($_POST['params']['sort']['field']==='id'){
+          $sortField = 'idq';
+        }else{
+          $sortField = $_POST['params']['sort']['field'];
+        }
+        $query = "SELECT * FROM `questions` 
+                  ORDER BY `".$sortField."` ".$_POST['params']['sort']['order']."
+                  LIMIT ".+$_POST['params']['pagination']['page']-1.",".+$_POST['params']['pagination']['perPage'];
+        $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+
+        //2. засовываем всё в ассоциативный массив
+        $ij=0;
+        while ($row = mysql_fetch_assoc($result)) {
+            $r['questions'][$ij] = $row;
+            $r['questions'][$ij]['id'] = $row['idq'];
+            $ij++; 
+        }
+      }
       if ($_POST['method']==='addNewQuestion'){
         $query = "INSERT INTO `questions` (
           `theme`, 
