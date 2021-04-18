@@ -1,7 +1,7 @@
 <?php
 header('ReferrerPolicy: "unsafe-url"');
 header('Access-Control-Allow-Headers: *');
-
+header('Access-Control-Allow-Origin: *');
 $_POST = json_decode(file_get_contents('php://input'), true);
 if (isset($_POST['params']['qr']))
 { 
@@ -15,29 +15,27 @@ if (isset($_POST['params']['qr']))
       
      
     }else{
-      $f = openssl_random_pseudo_bytes(8);
-        $hex = bin2hex($f);
         $query = "INSERT INTO `gamers` (
           `qr`, 
           `name`, 
           `color`, 
           `time`          
           ) VALUES ( '"
-            .$hex."', '"
-            .$_POST['params']['name']."', "
-            .$_POST['params']['color'].", "
-            .time()." )";
+            .$_POST['params']['qr']."', '"
+            .$_POST['params']['name']."', '"
+            .$_POST['params']['color']."', "
+            .time().")";
         mysql_query($query) or die('write name err: ' . mysql_error());
     }
 
     if ($_POST['method']==='read'){
         //1. читаем из базы все вопросы
-        $query = "SELECT * FROM `answers`";
+        $query = "SELECT * FROM `questions`";
         $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
         //2. засовываем всё в ассоциативный массив
         $ij=0;
         while ($row = mysql_fetch_assoc($result)) {
-          $r['answers'][$ij] = $row;
+          $r['questions'][$ij] = $row;
           $ij++; 
         }
       }
