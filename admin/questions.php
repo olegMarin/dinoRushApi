@@ -18,18 +18,56 @@ if (isset($_POST['params']['token']))
         }else{
           $sortField = $_POST['params']['sort']['field'];
         }
-        $query = "SELECT * FROM `questions` 
-                  ORDER BY `".$sortField."` ".$_POST['params']['sort']['order']."
-                  LIMIT ".+$_POST['params']['pagination']['page']-1.",".+$_POST['params']['pagination']['perPage'];
+        $start = $_POST['params']['pagination']['page']-1;
+        $query = "SELECT * FROM `questions` ORDER BY ".$sortField." ".$_POST['params']['sort']['order']." LIMIT ".$start.",".$_POST['params']['pagination']['perPage'];
         $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
 
         //2. засовываем всё в ассоциативный массив
         $ij=0;
         while ($row = mysql_fetch_assoc($result)) {
-            $r['questions'][$ij] = $row;
-            $r['questions'][$ij]['id'] = $row['idq'];
+            $r['data'][$ij] = $row;
+            $r['data'][$ij]['id'] = $row['idq'];
             $ij++; 
         }
+
+        $res = mysql_query("SELECT count(*) FROM `questions`"); //WHERE rating > 10
+        $row = mysql_fetch_row($res);
+        $count = $row[0];
+
+        $r['total'] = $count;
+      }
+
+      if ($_POST['method']==='create'){
+        $query = "INSERT INTO `questions` (
+          `theme`, 
+          `parentTheme`, 
+          `serialNumber`, 
+          `text`, 
+          `correctAnswer`, 
+          `wrongAnswer`, 
+          `typeAchievement`, 
+          `utime`          
+          ) VALUES ( '"
+            .$_POST['params']['data']['theme']."', '"
+            .$_POST['params']['data']['parentTheme']."', "
+            .$_POST['params']['data']['serialNumber'].", '"
+            .$_POST['params']['data']['text']."', '"
+            .$_POST['params']['data']['correctAnswer']."', '"
+            .$_POST['params']['data']['wrongAnswer']."', '"
+            .$_POST['params']['data']['typeAchievement']."', "
+            .time()." )";
+        mysql_query($query) or die('write name err: ' . mysql_error());
+
+        $query = "SELECT * FROM `questions` WHERE ipq = ".mysql_insert_id();
+        $result = mysql_query($query) or die('Запрос не удался: ' . mysql_error());
+
+        //2. засовываем всё в ассоциативный массив
+        $ij=0;
+        $row = mysql_fetch_assoc($result)
+            $r['data'] = $row;
+            $r['data']['id'] = $row['idq'];
+           
+
       }
       if ($_POST['method']==='addNewQuestion'){
         $query = "INSERT INTO `questions` (
